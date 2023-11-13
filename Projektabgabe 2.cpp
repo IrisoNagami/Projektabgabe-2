@@ -63,16 +63,6 @@ int geteilt(int x, int y)
 	return x / y;
 }
 
-void AusgabeErgebnisse(vector<double> Ergebnisse)
-{
-	//Ausgabe der Ergebnisse
-	cout << "Die Ergebnisse sind: ";
-	for (int i = 0; i < Ergebnisse.size(); ++i)
-	{
-		cout << Ergebnisse[i] << ", ";
-	}
-}
-
 int main()
 {
 	string ersterOperant;
@@ -82,15 +72,6 @@ int main()
 	vector<string> erlaubteZahlen = {"null", "ein", "eins", "zwei", "drei", "vier", "fuenf", "sechs", "sieben", "acht", "neun", "zehn" };
 	vector<string> erlaubteOperatoren = { "plus", "minus", "mal", "geteilt-durch", "dividiert-durch" };
 	vector<double> Ergebnisse = {};
-
-	//Überprüfung, ob beendet werden soll
-	if (ersterOperant == "ende")
-	{
-		AusgabeErgebnisse(Ergebnisse);
-		return 0;
-	}
-
-
 
 	while (true)
 	{
