@@ -63,6 +63,7 @@ int geteilt(int x, int y)
 	return x / y;
 }
 
+
 int main()
 {
 	string ersterOperant;
@@ -102,7 +103,11 @@ int main()
 		}
 		else
 		{
-			if ((rechenZeichen == "dividiert-durch" || rechenZeichen == "geteilt-durch") && zweiterOperant == "null")
+			
+			int ersteZahl = konvertierungVonStringInInt(ersterOperant);
+			int zweiteZahl = konvertierungVonStringInInt(zweiterOperant);
+			
+			if ((rechenZeichen == "dividiert-durch" || rechenZeichen == "geteilt-durch") && zweiteZahl == 0)
 			{
 				cout << "Division durch 0 ist nicht erlaubt\n";
 			}
@@ -110,27 +115,27 @@ int main()
 			else if (rechenZeichen == "plus")
 			{
 				cout << "Gespeichert\n";
-				Ergebnisse.push_back(addition(konvertierungVonStringInInt(ersterOperant), konvertierungVonStringInInt(zweiterOperant)));
+				Ergebnisse.push_back(addition(ersteZahl, zweiteZahl));
 			}
 			else if (rechenZeichen == "mal")
 			{
 				cout << "Gespeichert\n";
-				Ergebnisse.push_back(multiplikation(konvertierungVonStringInInt(ersterOperant), konvertierungVonStringInInt(zweiterOperant)));
+				Ergebnisse.push_back(multiplikation(ersteZahl, zweiteZahl));
 			}
 			else if (rechenZeichen == "minus")
 			{
 				cout << "Gespeichert\n";
-				Ergebnisse.push_back(subtraktion(konvertierungVonStringInInt(ersterOperant), konvertierungVonStringInInt(zweiterOperant)));
+				Ergebnisse.push_back(subtraktion(ersteZahl, zweiteZahl));
 			}
 			else if (rechenZeichen == "geteilt-durch")
 			{
 				cout << "Gespeichert\n";
-				Ergebnisse.push_back(geteilt(konvertierungVonStringInInt(ersterOperant), konvertierungVonStringInInt(zweiterOperant)));
+				Ergebnisse.push_back(geteilt(ersteZahl, zweiteZahl));
 			}
 			else if (rechenZeichen == "dividiert-durch")
 			{
 				cout << "Gespeichert\n";
-				Ergebnisse.push_back(division(konvertierungVonStringInInt(ersterOperant), konvertierungVonStringInInt(zweiterOperant)));
+				Ergebnisse.push_back(division(ersteZahl, zweiteZahl));
 			}
 		}
 	}
@@ -148,7 +153,7 @@ int main()
 			{
 				cout << Ergebnisse[i] << "\n";
 			}
-			else
+			else 
 			{
 				cout << Ergebnisse[i] << ", ";
 			}
