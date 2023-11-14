@@ -148,9 +148,11 @@ int main()
 			{
 				cout << Ergebnisse[i] << "\n";
 			}
-			cout << Ergebnisse[i] << ", ";
+			else
+			{
+				cout << Ergebnisse[i] << ", ";
+			}
 		}
 	}
-	//AusgabeErgebnisse(Ergebnisse);
 	return 0;
 }
