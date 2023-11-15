@@ -26,7 +26,7 @@ int konvertierungVonStringInInt(string x)
 		return 0;
 }
 
-bool exisitiertInVector(string x, vector<string> y)		//Überprüft ob Variable in Vektor exisiert
+bool exisitiertInVector(string x, vector<string> y, string nameEingabe)		//Überprüft ob Variable in Vektor exisiert
 {
 	for (int i = 0; i < y.size(); ++i)
 	{
@@ -35,7 +35,7 @@ bool exisitiertInVector(string x, vector<string> y)		//Überprüft ob Variable i
 			return true;
 		}
 	}
-	return false;										//Wenn alle nein, dann false zurück
+	error("Der " + nameEingabe + " konnte nicht gelesen werden.\n");								//Wenn alle nein, dann Fehler
 }
 
 int addition(int x, int y)
@@ -55,64 +55,69 @@ int subtraktion(int x, int y)
 
 double division(int x, int y)		//Gleitkommazahlen
 {
-	return double(x) / y;
+	if (y == 0)
+	{
+		error("Division durch 0 ist nicht erlaubt\n");
+	}
+	else
+	{
+		return double(x) / y;			//Nichttypsicher
+	}
 }
 
 int geteilt(int x, int y)
 {
-	return x / y;
+	if (y == 0)
+	{
+		error("Division durch 0 ist nicht erlaubt\n");
+	}
+	else
+	{
+		return x / y;
+	}
 }
 
 
 int main()
 {
-	string ersterOperant;
+	string ersterOperand;
 	string rechenZeichen;
-	string zweiterOperant;
+	string zweiterOperand;
 
 	vector<string> erlaubteZahlen = {"null", "ein", "eins", "zwei", "drei", "vier", "fuenf", "sechs", "sieben", "acht", "neun", "zehn" };
 	vector<string> erlaubteOperatoren = { "plus", "minus", "mal", "geteilt-durch", "dividiert-durch" };
-	vector<double> Ergebnisse = {};
+	vector<double> Ergebnisse = {};				//Nichttypsicher
 
 	while (true)
 	{
-		cin >> ersterOperant;
-		if (ersterOperant == "ende")
+		bool thisLoopError = false;				//Variable für später zum Überprüfen, ob es in diesem Durchlauf einen Fehler gab
+		cin >> ersterOperand;
+		if (ersterOperand == "ende")
 		{
-			break;
+			break;								//while beenden
 		}
 		cin >> rechenZeichen;
-		cin >> zweiterOperant;
+		cin >> zweiterOperand;
+		try 
+		{
+			exisitiertInVector(ersterOperand, erlaubteZahlen, "erste Operand");
+			exisitiertInVector(rechenZeichen, erlaubteOperatoren, "Operator");
+			exisitiertInVector(zweiterOperand, erlaubteZahlen, "zweite Operand");
+		}
+		catch (runtime_error& e)		//Fehler auffangen
+		{
+			cout << e.what();
+			thisLoopError = true;		//Fehler merken
+		};
 
-		bool korrekteEingabe_ersterOperant = exisitiertInVector(ersterOperant, erlaubteZahlen);
-		bool korrekteEingabe_zweiterOperant = exisitiertInVector(zweiterOperant, erlaubteZahlen);
-		bool korrekteEingabe_rechenZeichen = exisitiertInVector(rechenZeichen, erlaubteOperatoren);
-
-		//Ausgabe, bei einer falschen Eingabe
-		if (!(korrekteEingabe_ersterOperant))
-		{
-			cout << "Der erste Operand konnte nicht gelesen werden." << "\n";
-		}
-		else if (!(korrekteEingabe_rechenZeichen))
-		{
-			cout << "Der Operator konnte nicht gelesen werden." << "\n";
-		}
-		else if (!(korrekteEingabe_zweiterOperant))
-		{
-			cout << "Der zweite Operand konnte nicht gelesen werden." << "\n";
-		}
-		else
+		if (!thisLoopError)		//Wenn kein Error geschehen ist machen
 		{
 			
-			int ersteZahl = konvertierungVonStringInInt(ersterOperant);
-			int zweiteZahl = konvertierungVonStringInInt(zweiterOperant);
+			int ersteZahl = konvertierungVonStringInInt(ersterOperand);
+			int zweiteZahl = konvertierungVonStringInInt(zweiterOperand);
 			
-			if ((rechenZeichen == "dividiert-durch" || rechenZeichen == "geteilt-durch") && zweiteZahl == 0)
-			{
-				cout << "Division durch 0 ist nicht erlaubt\n";
-			}
 			//Rechnen und speichern
-			else if (rechenZeichen == "plus")
+			if (rechenZeichen == "plus")
 			{
 				cout << "Gespeichert\n";
 				Ergebnisse.push_back(addition(ersteZahl, zweiteZahl));
@@ -129,13 +134,27 @@ int main()
 			}
 			else if (rechenZeichen == "geteilt-durch")
 			{
-				cout << "Gespeichert\n";
-				Ergebnisse.push_back(geteilt(ersteZahl, zweiteZahl));
+				try
+				{
+					Ergebnisse.push_back(geteilt(ersteZahl, zweiteZahl));
+					cout << "Gespeichert\n";
+				}
+				catch (runtime_error& e)
+				{
+					cout << e.what();
+				}
 			}
 			else if (rechenZeichen == "dividiert-durch")
 			{
-				cout << "Gespeichert\n";
-				Ergebnisse.push_back(division(ersteZahl, zweiteZahl));
+				try
+				{
+					Ergebnisse.push_back(division(ersteZahl, zweiteZahl));
+					cout << "Gespeichert\n";
+				}
+				catch(runtime_error& e)
+				{
+					cout << e.what();
+				}
 			}
 		}
 	}
@@ -143,6 +162,10 @@ int main()
 	if (Ergebnisse.size() == 0)
 	{
 		cout << "Es gibt keine Ergebnisse\n";
+	}
+	else if (Ergebnisse.size() == 1)
+	{
+		cout << "Das Ergebnis ist: " << Ergebnisse[0] << '\n';
 	}
 	else
 	{
