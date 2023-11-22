@@ -97,7 +97,15 @@ int main()
 			break;								//while beenden
 		}
 		cin >> rechenZeichen;
+		if (rechenZeichen == "ende")
+		{
+			break;								//while beenden
+		}
 		cin >> zweiterOperand;
+		if (zweiterOperand == "ende")
+		{
+			break;								//while beenden
+		}
 		try 
 		{
 			exisitiertInVector(ersterOperand, erlaubteZahlen, "erste Operand");
