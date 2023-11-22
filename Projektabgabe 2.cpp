@@ -26,13 +26,13 @@ int konvertierungVonStringInInt(string x)
 		return 0;
 }
 
-bool exisitiertInVector(string x, vector<string> y, string nameEingabe)		//Überprüft ob Variable in Vektor exisiert
+void exisitiertInVector(string x, vector<string> y, string nameEingabe)		//Überprüft ob Variable in Vektor exisiert
 {
 	for (int i = 0; i < y.size(); ++i)
 	{
 		if (x == y[i])									//Wenn ja, dann true zurück
 		{
-			return true;
+			return;
 		}
 	}
 	error("Der " + nameEingabe + " konnte nicht gelesen werden.\n");								//Wenn alle nein, dann Fehler
